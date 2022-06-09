@@ -1,0 +1,17 @@
+name: "Hello Actions"
+description: "Greet someone and record the time"
+inputs:
+  who-to-greet:
+    description: "Who to greet"
+    required: true
+    default: "World"
+  milliseconds:
+    description: "Milliseconds to wait"
+    required: true
+    default: "300"
+outputs:
+  time:
+    description: "The time we greeted you"
+runs:
+  using: "node16"
+  main: "index.js"
