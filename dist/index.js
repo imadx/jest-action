@@ -51,6 +51,9 @@ function run() {
             yield (0, wait_1.wait)(parseInt(ms, 10));
             core.debug(new Date().toTimeString());
             core.setOutput('time', new Date().toTimeString());
+            core.info('Install dependencies...');
+            (0, child_process_1.execSync)('npm install');
+            core.info('Running jest...');
             const output = (0, child_process_1.execSync)('npx --yes jest');
             core.info(output.toString());
         }

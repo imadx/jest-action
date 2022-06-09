@@ -12,6 +12,10 @@ async function run(): Promise<void> {
     core.debug(new Date().toTimeString())
 
     core.setOutput('time', new Date().toTimeString())
+
+    core.info('Install dependencies...')
+    execSync('npm install')
+    core.info('Running jest...')
     const output = execSync('npx --yes jest')
     core.info(output.toString())
   } catch (error) {
