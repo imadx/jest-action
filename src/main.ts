@@ -1,6 +1,6 @@
 import * as core from '@actions/core'
-import {exec, execSync} from 'child_process'
 import {wait} from './wait'
+import jest from 'jest'
 
 async function run(): Promise<void> {
   try {
@@ -8,11 +8,8 @@ async function run(): Promise<void> {
     core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
     core.setOutput('time', new Date().toTimeString())
 
-    core.info('Install dependencies...')
-    execSync('npm install')
     core.info('Running jest...')
-    const output = execSync('npx --yes jest')
-    core.info(output.toString())
+    jest.run(['shard=1/2'])
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }
