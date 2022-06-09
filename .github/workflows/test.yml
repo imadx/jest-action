@@ -1,0 +1,64 @@
+name: "test"
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - "releases/*"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - uses: pnpm/action-setup@v2.0.1
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          version: 7
+          run_install: false
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        run: |
+          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - uses: ./
+        name: "Run tests 1/2"
+        with:
+          action-secret: "${{ secrets.PERSONAL_ACCESS_TOKEN }}"
+          command: "run-tests"
+          shard: 1/2
+          coverage: true
+
+      - uses: ./
+        name: "Run tests 2/2"
+        with:
+          action-secret: "${{ secrets.PERSONAL_ACCESS_TOKEN }}"
+          command: "run-tests"
+          shard: 2/2
+          coverage: true
+
+      - uses: ./
+        name: "Merge Coverage"
+        with:
+          action-secret: "${{ secrets.PERSONAL_ACCESS_TOKEN }}"
+          command: "merge-coverage"

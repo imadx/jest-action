@@ -1,22 +1,31 @@
-import * as core from "@actions/core";
-import * as github from "@actions/github";
+import { error, getBooleanInput, getInput, setFailed } from "@actions/core";
+import { info } from "console";
+import { mergeCoverage } from "./steps/merge-coverage";
+import { runTests } from "./steps/run-tests";
 
 async function run() {
-  try {
-    const ms = core.getInput("milliseconds");
-    console.log(`Waiting ${ms} milliseconds ...`);
+  const command = getInput("command");
 
-    await new Promise((resolve) => setTimeout(resolve, Number(ms)));
+  info(`Running command: ${command}...`);
 
-    const greeter = core.getInput("who-to-greet");
-    console.log(`Hello ${greeter}`);
+  switch (command) {
+    case "run-tests":
+      const coverage = getBooleanInput("coverage");
+      const shard = getInput("shard");
 
-    core.setOutput("time", new Date().toTimeString());
-
-    const payload = JSON.stringify(github.context.payload, undefined, 2);
-    console.log(`The event payload: ${payload}`);
-  } catch (exception) {
-    console.error(exception);
-    core.setFailed(exception.message);
+      await runTests({ coverage, shard });
+      break;
+    case "merge-coverage":
+      await mergeCoverage({
+        token: getInput("action-secret") || getInput("github-token"),
+      });
+      break;
+    default:
+      error(`Invalid command: ${command}`);
+      setFailed(`Invalid command: ${command}`);
   }
+
+  info(`Running command: ${command}... DONE`);
 }
+
+run();

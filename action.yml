@@ -1,17 +1,21 @@
 name: "Hello Actions"
 description: "Greet someone and record the time"
 inputs:
-  who-to-greet:
-    description: "Who to greet"
+  action-secret:
+    description: "Github Token"
     required: true
-    default: "World"
-  milliseconds:
-    description: "Milliseconds to wait"
+  command:
+    description: "Action to run (eg: 'run-tests' | 'merge-coverage'"
     required: true
-    default: "300"
-outputs:
-  time:
-    description: "The time we greeted you"
+    default: "run-tests"
+  coverage:
+    description: "Enable Coverage"
+    required: true
+    default: "true"
+  shard:
+    description: "Shard to run (eg: '1/4')"
+    required: false
+    default: "1/1"
 runs:
   using: "node16"
-  main: "index.js"
+  main: "dist/index.js"
