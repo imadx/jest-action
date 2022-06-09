@@ -78,3 +78,4 @@ jobs:
       - uses: ./
         with:
           milliseconds: 1000
+          github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
