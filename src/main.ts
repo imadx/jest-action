@@ -12,7 +12,7 @@ async function run(): Promise<void> {
     core.debug(new Date().toTimeString())
 
     core.setOutput('time', new Date().toTimeString())
-    const output = execSync('npm run test')
+    const output = execSync('npx --yes jest')
     core.info(output.toString())
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
