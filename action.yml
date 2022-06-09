@@ -13,5 +13,7 @@ runs:
     - uses: actions/setup-node@v2
       with:
         node-version: '16.x'
+    - run: 'npm run'
+      shell: bash
     - run: 'npm run dist/index.js'
       shell: bash
