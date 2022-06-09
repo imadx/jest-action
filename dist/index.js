@@ -51,7 +51,8 @@ function run() {
             yield (0, wait_1.wait)(parseInt(ms, 10));
             core.debug(new Date().toTimeString());
             core.setOutput('time', new Date().toTimeString());
-            (0, child_process_1.exec)('pnpm run test');
+            const output = (0, child_process_1.execSync)('pnpm run test');
+            core.info(output.toString());
         }
         catch (error) {
             if (error instanceof Error)
