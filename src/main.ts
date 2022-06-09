@@ -1,6 +1,7 @@
 import * as core from '@actions/core'
 import {wait} from './wait'
-import jest from 'jest'
+import jestCli from 'jest-cli'
+import {exec, execSync} from 'child_process'
 
 async function run(): Promise<void> {
   try {
@@ -9,7 +10,7 @@ async function run(): Promise<void> {
     core.setOutput('time', new Date().toTimeString())
 
     core.info('Running jest...')
-    jest.run(['shard=1/2'])
+    execSync('npx --yes jest --coverage')
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }

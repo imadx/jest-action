@@ -25,10 +25,13 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.6.0"
+    "@actions/core": "^1.6.0",
+    "jest-cli": "^28.1.1"
   },
   "devDependencies": {
     "@jest/globals": "^28.1.1",
+    "@types/jest": "^28.1.1",
+    "@types/jest-cli": "^24.3.0",
     "@types/node": "^16.11.39",
     "@typescript-eslint/parser": "^5.8.1",
     "@vercel/ncc": "^0.31.1",
