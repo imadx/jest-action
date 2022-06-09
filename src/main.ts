@@ -12,7 +12,7 @@ async function run(): Promise<void> {
     core.debug(new Date().toTimeString())
 
     core.setOutput('time', new Date().toTimeString())
-    const output = execSync('pnpm run test')
+    const output = execSync('npm run test')
     core.info(output.toString())
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
