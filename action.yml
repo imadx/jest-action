@@ -7,5 +7,11 @@ inputs:
     description: 'input description here'
     default: 'default value if applicable'
 runs:
-  using: 'node16'
-  main: 'dist/index.js'
+  using: 'composite'
+  steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '16.x'
+    - run: 'npm run dist/index.js'
+      shell: bash
