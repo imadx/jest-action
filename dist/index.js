@@ -40,6 +40,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(558));
+const child_process_1 = __nccwpck_require__(129);
 const wait_1 = __nccwpck_require__(958);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -50,6 +51,7 @@ function run() {
             yield (0, wait_1.wait)(parseInt(ms, 10));
             core.debug(new Date().toTimeString());
             core.setOutput('time', new Date().toTimeString());
+            (0, child_process_1.exec)('pnpm run test');
         }
         catch (error) {
             if (error instanceof Error)
@@ -2044,6 +2046,14 @@ exports.debug = debug; // for test
 
 "use strict";
 module.exports = require("assert");
+
+/***/ }),
+
+/***/ 129:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("child_process");
 
 /***/ }),
 

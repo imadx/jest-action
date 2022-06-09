@@ -1,4 +1,5 @@
 import * as core from '@actions/core'
+import {exec, execSync} from 'child_process'
 import {wait} from './wait'
 
 async function run(): Promise<void> {
@@ -11,6 +12,8 @@ async function run(): Promise<void> {
     core.debug(new Date().toTimeString())
 
     core.setOutput('time', new Date().toTimeString())
+    const output = execSync('pnpm run test')
+    core.info(output.toString())
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }

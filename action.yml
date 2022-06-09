@@ -1,8 +1,8 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Jest Action'
+description: 'Runs jest with shards and outputs coverage'
+author: 'imadx (ahtimadhusanka@gmail.com)'
 inputs:
-  milliseconds: # change this
+  milliseconds:
     required: true
     description: 'input description here'
     default: 'default value if applicable'
