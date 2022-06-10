@@ -13,7 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install Node.js
+      - name: Install NodeJS
         uses: actions/setup-node@v3
         with:
           node-version: 16
@@ -44,7 +44,7 @@ jobs:
       - uses: ./
         name: "Run tests 1/2"
         with:
-          action-secret: "${{ secrets.PERSONAL_ACCESS_TOKEN }}"
+          github-token: "${{ secrets.PERSONAL_ACCESS_TOKEN }}"
           command: "run-tests"
           shard: 1/2
           coverage: true
@@ -52,7 +52,7 @@ jobs:
       - uses: ./
         name: "Run tests 2/2"
         with:
-          action-secret: "${{ secrets.PERSONAL_ACCESS_TOKEN }}"
+          github-token: "${{ secrets.PERSONAL_ACCESS_TOKEN }}"
           command: "run-tests"
           shard: 2/2
           coverage: true
@@ -60,5 +60,5 @@ jobs:
       - uses: ./
         name: "Merge Coverage"
         with:
-          action-secret: "${{ secrets.PERSONAL_ACCESS_TOKEN }}"
+          github-token: "${{ secrets.PERSONAL_ACCESS_TOKEN }}"
           command: "merge-coverage"

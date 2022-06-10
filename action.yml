@@ -1,21 +1,26 @@
-name: "Hello Actions"
-description: "Greet someone and record the time"
+name: "Jest GitHub Action"
+author: "Ishan Madhusanka (ahtimadhusanka@gmail.com)"
+description: "Runs Jest with shard support and merges collected coverage"
 inputs:
-  action-secret:
-    description: "Github Token"
-    required: true
+  github-token:
+    description: "Github Token for the workflow"
+    default: "GITHUB_TOKEN"
+    required: false
   command:
-    description: "Action to run (eg: 'run-tests' | 'merge-coverage'"
-    required: true
+    description: "Command to run (one of 'run-tests' | 'merge-coverage'"
+    required: false
     default: "run-tests"
   coverage:
-    description: "Enable Coverage"
-    required: true
+    description: "Enable Coverage for`run-tests` command"
+    required: false
     default: "true"
   shard:
-    description: "Shard to run (eg: '1/4')"
+    description: "Jest shard to be executed for`run-tests` command (eg: `1/4`) "
     required: false
     default: "1/1"
 runs:
   using: "node16"
   main: "dist/index.js"
+branding:
+  icon: "check-circle"
+  color: "purple"
