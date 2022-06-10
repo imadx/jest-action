@@ -5,6 +5,7 @@ import { info } from "console";
 import { readFileSync } from "fs";
 import { SummaryTotal } from "../types";
 import { getCoverageArtifactName, getSummaryTable, logException } from "../utils";
+import { debug } from "@actions/core";
 
 interface MergeCoverage {
   token: string;
@@ -19,7 +20,8 @@ export const mergeCoverage = async ({ token, skipArtifactUpload, shardCount }: M
     if (!skipArtifactUpload) {
       const artifactClient = createClient();
       for (let i = 1; i <= shardCount; i++) {
-        await artifactClient.downloadArtifact(getCoverageArtifactName(i));
+        const downloadOutput = await artifactClient.downloadArtifact(getCoverageArtifactName(i));
+        debug(`downloadOutput: ${JSON.stringify(downloadOutput)}`);
       }
     }
 

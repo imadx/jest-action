@@ -92,3 +92,4 @@ jobs:
         with:
           github-token: "${{ secrets.PERSONAL_ACCESS_TOKEN }}"
           command: "merge-coverage"
+          shard-count: "2"
