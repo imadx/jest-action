@@ -45,7 +45,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: "16.x"
-      - uses: imadx/jest-action@v0.4
+      - uses: imadx/jest-action@v0.5
         with:
           command: "run-tests"
           shard: ${{ matrix.shard }}
@@ -58,7 +58,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: "16.x"
-      - uses: imadx/jest-action@v0.4
+      - uses: imadx/jest-action@v0.5
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
           command: "merge-coverage"
