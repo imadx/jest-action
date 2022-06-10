@@ -1,9 +1,9 @@
 import { error, getBooleanInput, getInput, setFailed } from "@actions/core";
 import { info } from "console";
-import { mergeCoverage } from "./src/steps/merge-coverage";
-import { runTests } from "./src/steps/run-tests";
+import { mergeCoverage } from "./steps/merge-coverage";
+import { runTests } from "./steps/run-tests";
 
-async function run() {
+export const run = async () => {
   const command = getInput("command");
 
   info(`Running command: ${command}...`);
@@ -23,12 +23,12 @@ async function run() {
         shardCount: +getInput("shard-count"),
       });
       break;
-    default:
-      error(`Invalid command: ${command}`);
-      setFailed(`Invalid command: ${command}`);
+    default: {
+      const _error = `Invalid command: ${command}`;
+      error(_error);
+      setFailed(_error);
+    }
   }
 
   info(`Running command: ${command}... DONE`);
-}
-
-run();
+};
