@@ -1,6 +1,7 @@
 # Jest GitHub Action
 
 This action allows Jest to be run in shards and reports merged coverage to the commit on behalf of the commit owner.
+The action consumes the default `npm run test` command. Therefore, additional `jest` arguments could be defined in `package.json` with the `test` command.
 
 ## Inputs
 
@@ -8,22 +9,22 @@ This action allows Jest to be run in shards and reports merged coverage to the c
 
 ### with 'run-tests' command
 
-| Input                  | Default        | Description                                                                       |
-| ---------------------- | -------------- | --------------------------------------------------------------------------------- |
-| `github-token` \*      | `GITHUB_TOKEN` | Github Token for the workflow                                                     |
-| `command`              | `run-tests`    | Action to run. <br /> Available commands: `run-tests`, `merge-coverage`           |
-| `coverage`             | `true`         | Enable Coverage for`run-tests` command                                            |
-| `shard`                | `1/1`          | Jest shard to be executed for`run-tests` command (eg: `1/4`)                      |
-| `skip-artifact-upload` | `false`        | Avoid uploading coverage results, if all the actions are running in a single step |
+| Input                  | Default        | Description                                                                            |
+| ---------------------- | -------------- | -------------------------------------------------------------------------------------- |
+| `github-token` \*      | `GITHUB_TOKEN` | Github Token for the workflow                                                          |
+| `command`              | `run-tests`    | Action to run. <br /> Available commands: `run-tests`, `merge-coverage`                |
+| `coverage`             | `true`         | Enable Coverage for`run-tests` command                                                 |
+| `shard`                | `1/1`          | Jest shard to be executed for`run-tests` command (eg: `1/4`)                           |
+| `skip-artifact-upload` | `false`        | Avoid uploading coverage results,<br/> if all the actions are running in a single step |
 
 ### with 'merge-coverage' command
 
-| Input                  | Default        | Description                                                                       |
-| ---------------------- | -------------- | --------------------------------------------------------------------------------- |
-| `github-token` \*      | `GITHUB_TOKEN` | Github Token for the workflow                                                     |
-| `command` \*           | `run-tests`    | Action to run. <br /> Available commands: `run-tests`, `merge-coverage`           |
-| `shard-count`          | `1`            | Shard count need to be defined `merge-coverage` command                           |
-| `skip-artifact-upload` | `false`        | Avoid uploading coverage results, if all the actions are running in a single step |
+| Input                  | Default        | Description                                                                                |
+| ---------------------- | -------------- | ------------------------------------------------------------------------------------------ |
+| `github-token` \*      | `GITHUB_TOKEN` | Github Token for the workflow                                                              |
+| `command` \*           | `run-tests`    | **Should set to `merge-coverage`**                                                         |
+| `shard-count`          | `1`            | **Shard count need to be defined `merge-coverage` command<br/> if different from default** |
+| `skip-artifact-upload` | `false`        | Avoid uploading coverage results, if all the actions are running in a single step          |
 
 ## Example with a matrix
 
