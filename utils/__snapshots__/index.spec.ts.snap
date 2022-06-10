@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`utils getSummaryTable should output a markdown table 1`] = `
+"| | Covered/Total | Percentage |
+|:--| :--: | --:|
+| <b>Statements</b> | \`100/100\` | \`100%\` 🟢 |
+| <b>Branches</b> | \`70/100\` | \`70%\` 🟠 |
+| <b>Functions</b> | \`50/100\` | \`50%\` 🔴 |
+| <b>Lines</b> | \`10/100\` | \`10%\` 🔴 |"
+`;

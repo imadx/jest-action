@@ -1,9 +1,9 @@
 import { error, setFailed } from "@actions/core";
 import { mv } from "@actions/io";
 import { ExecError, SummaryTotal } from "../types";
-import { capitalize } from "lodash-es";
+import { capitalize } from "lodash";
 
-export const getString = (...args: string[]): string => {
+export const getString = (...args: (number | string | null | undefined)[]): string => {
   return args.filter(Boolean).join(" ");
 };
 
