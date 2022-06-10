@@ -25,17 +25,24 @@ export const runTests = async ({ coverage, shard, skipArtifactUpload }: RunTests
     debug(`coverageFileName: ${coverageFileName}`);
     await moveFile("coverage/coverage-final.json", coverageFileName);
 
-    if (!skipArtifactUpload) {
-      info("Uploading artifacts...");
-      const artifactClient = createClient();
-      const output = await artifactClient.uploadArtifact(getCoverageArtifactName(shardIndex), [coverageFileName], ".", {
-        retentionDays: 1,
-      });
-
-      debug(`output: ${JSON.stringify(output)}`);
-
-      info("Uploading artifacts... DONE");
+    if (skipArtifactUpload) {
+      info("Running tests... DONE");
+      return;
     }
+    info("Uploading artifacts...");
+    const artifactClient = createClient();
+    const outputUploadArtifact = await artifactClient.uploadArtifact(
+      getCoverageArtifactName(shardIndex),
+      [coverageFileName],
+      ".",
+      {
+        retentionDays: 1,
+      }
+    );
+
+    debug(`outputUploadArtifact: ${JSON.stringify(outputUploadArtifact)}`);
+
+    info("Uploading artifacts... DONE");
 
     info("Running tests... DONE");
   } catch (exception) {

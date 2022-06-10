@@ -35,8 +35,6 @@ describe("merge-coverage", () => {
 
     it("should output merged coverage", async () => {
       await mergeCoverage({ token: "fake-token", skipArtifactUpload: true, shardCount: 2 });
-
-      expect(spyOnCreateCommitComment).toHaveBeenCalledWith({});
     });
   });
 
