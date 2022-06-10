@@ -3,7 +3,7 @@ import { create as createClient } from "@actions/artifact";
 import { execSync } from "child_process";
 import { info } from "console";
 import { readFileSync } from "fs";
-import { SummaryTotal } from "../types";
+import { CoverageMetric, CoverageSummary } from "../types";
 import { getCoverageArtifactName, getSummaryTable, logException } from "../utils";
 import { debug } from "@actions/core";
 import { getOctokitForToken } from "../utils/octokit";
@@ -28,7 +28,7 @@ export const mergeCoverage = async ({ token, skipArtifactUpload, shardCount }: M
 
     // TODO: check if file exists
     const output = execSync(
-      "npx --yes nyc report --reporter=json-summary --reporter=text -t coverage --report-dir coverage-merged"
+      "npx --yes nyc report --reporter=json-summary --reporter=json -t coverage --report-dir coverage-merged"
     );
 
     const textSummary = output.toString();
@@ -38,13 +38,13 @@ export const mergeCoverage = async ({ token, skipArtifactUpload, shardCount }: M
 
     const summary = readFileSync("./coverage-merged/coverage-summary.json");
 
-    const result = JSON.parse(summary.toString()) as { total: SummaryTotal };
+    const result = JSON.parse(summary.toString()) as CoverageSummary;
 
     if (!token.trim()) {
       throw new Error("token not found");
     }
 
-    const commentBody = getCommentBody(result.total, textSummary);
+    const commentBody = getCommentBody(result, textSummary);
 
     if (context.payload.pull_request) {
       getOctokitForToken(token).rest.issues.createComment({
@@ -66,13 +66,13 @@ export const mergeCoverage = async ({ token, skipArtifactUpload, shardCount }: M
   }
 };
 
-export const getCommentBody = (summaryTotal: SummaryTotal, textSummary: string): string => {
+export const getCommentBody = (summaryTotal: CoverageSummary, textSummary: string): string => {
   const output = [];
 
   // Code Coverage Summary
   output.push("### Code Coverage Summary");
   output.push("");
-  output.push(getSummaryTable(summaryTotal));
+  output.push(getSummaryTable(summaryTotal.total));
 
   // Code Coverage on All Files
   output.push(`<details>`);
@@ -98,10 +98,7 @@ const removeFirstAndLastLines = (textSummary: string) => {
       if (match) {
         line = line.replace(/^\s+/, "".padStart(match[0].length * 2, "─") + " ");
       }
-
     }
-
-    line = line.replace(/([A-z0-9\.]+( [A-z0-9\.]+){0,1})/g, "`$1`");
 
     return line;
   });

@@ -1,6 +1,6 @@
 import { error, setFailed } from "@actions/core";
 import { mv } from "@actions/io";
-import { ExecError, SummaryTotal } from "../types";
+import { ExecError, CoverageMetric, CoverageSummary } from "../types";
 import { capitalize } from "lodash";
 
 export const getString = (...args: (number | string | null | undefined)[]): string => {
@@ -17,12 +17,12 @@ export const logException = (exception: Error | ExecError) => {
   setFailed(message);
 };
 
-export const getSummaryTable = (summaryTotal: SummaryTotal): string => {
+export const getSummaryTable = (summaryTotal: CoverageMetric): string => {
   const getHeader = () => {
     return [`| | Covered/Total | Percentage |`, `|:--| :--: | --:|`];
   };
 
-  const getLine = (metric: keyof SummaryTotal) => {
+  const getLine = (metric: keyof CoverageMetric) => {
     const { covered, total, pct } = summaryTotal[metric];
     return `| <b>${capitalize(metric)}</b> | \`${covered}/${total}\` | \`${pct}%\` ${getIndicator(pct)} |`;
   };
