@@ -36,11 +36,19 @@ export const mergeCoverage = async ({ token, skipArtifactUpload, shardCount }: M
       throw new Error("token not found");
     }
 
-    getOctokit(token).rest.repos.createCommitComment({
-      ...context.repo,
-      commit_sha: context.sha,
-      body: getCommentBody(result.total),
-    });
+    if (context.payload.pull_request) {
+      getOctokit(token).rest.issues.createComment({
+        ...context.repo,
+        issue_number: context.payload.pull_request.number,
+        body: getCommentBody(result.total),
+      });
+    } else {
+      getOctokit(token).rest.repos.createCommitComment({
+        ...context.repo,
+        commit_sha: context.sha,
+        body: getCommentBody(result.total),
+      });
+    }
 
     info("Merging coverage... DONE");
   } catch (exception) {
