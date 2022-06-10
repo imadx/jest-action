@@ -28,7 +28,7 @@ export const mergeCoverage = async ({ token, skipArtifactUpload, shardCount }: M
 
     // TODO: check if file exists
     const output = execSync(
-      "npx --yes nyc report --reporter=json-summary --reporter=json -t coverage --report-dir coverage-merged"
+      "npx --yes nyc report --reporter=json-summary --reporter=text -t coverage --report-dir coverage-merged"
     );
 
     const textSummary = output.toString();
@@ -66,13 +66,13 @@ export const mergeCoverage = async ({ token, skipArtifactUpload, shardCount }: M
   }
 };
 
-export const getCommentBody = (summaryTotal: CoverageSummary, textSummary: string): string => {
+export const getCommentBody = (coverageSummary: CoverageSummary, textSummary: string): string => {
   const output = [];
 
   // Code Coverage Summary
   output.push("### Code Coverage Summary");
   output.push("");
-  output.push(getSummaryTable(summaryTotal.total));
+  output.push(getSummaryTable(coverageSummary.total));
 
   // Code Coverage on All Files
   output.push(`<details>`);
