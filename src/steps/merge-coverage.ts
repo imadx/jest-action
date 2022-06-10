@@ -35,7 +35,7 @@ export const mergeCoverage = async ({ token, skipArtifactUpload, shardCount }: M
 
     info("Text Summary:");
     info(textSummary);
-    
+
     const summary = readFileSync("./coverage-merged/coverage-summary.json");
 
     const result = JSON.parse(summary.toString()) as { total: SummaryTotal };
@@ -90,7 +90,21 @@ export const getCommentBody = (summaryTotal: SummaryTotal, textSummary: string):
 };
 
 const removeFirstAndLastLines = (textSummary: string) => {
-  const lines = textSummary.split("\n").slice(1);
+  let lines = textSummary.split("\n").slice(1).filter(Boolean);
   lines.pop();
+  lines = lines.map((line) => {
+    if (line.startsWith(" ")) {
+      const match = line.match(/^\s+/);
+      if (match) {
+        line = line.replace(/^\s+/, "".padStart(match[0].length * 2, "─") + " ");
+      }
+
+    }
+
+    line = line.replace(/([A-z0-9\.]+( [A-z0-9\.]+){0,1})/g, "`$1`");
+
+    return line;
+  });
+
   return lines.join("\n");
 };
