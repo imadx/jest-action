@@ -22,7 +22,7 @@ export const mergeCoverage = async ({ token, skipArtifactUpload }: MergeCoverage
 
     if (!skipArtifactUpload) {
       const artifactClient = createClient();
-      artifactClient.downloadAllArtifacts();
+      await artifactClient.downloadAllArtifacts();
     }
 
     const summary = readFileSync("./coverage-merged/coverage-summary.json");
