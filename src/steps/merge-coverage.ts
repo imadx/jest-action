@@ -40,20 +40,16 @@ export const mergeCoverage = async ({ token, skipArtifactUpload, shardCount }: M
 
     const result = JSON.parse(summary.toString()) as CoverageSummary;
 
-    if (!token.trim()) {
-      throw new Error("token not found");
-    }
-
     const commentBody = getCommentBody(result, textSummary);
 
     if (context.payload.pull_request) {
-      getOctokitForToken(token).rest.issues.createComment({
+      await getOctokitForToken(token).rest.issues.createComment({
         ...context.repo,
         issue_number: context.payload.pull_request.number,
         body: commentBody,
       });
     } else {
-      getOctokitForToken(token).rest.repos.createCommitComment({
+      await getOctokitForToken(token).rest.repos.createCommitComment({
         ...context.repo,
         commit_sha: context.sha,
         body: commentBody,
