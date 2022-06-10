@@ -4,7 +4,7 @@ import { execSync } from "child_process";
 import { info } from "console";
 import { readFileSync } from "fs";
 import { CoverageMetric, CoverageSummary } from "../types";
-import { getCoverageArtifactName, getSummaryTable, logException } from "../utils";
+import { getCoverageArtifactName, getNthIndexOfCharacter, getSummaryTable, logException } from "../utils";
 import { debug } from "@actions/core";
 import { getOctokitForToken } from "../utils/octokit";
 
@@ -100,8 +100,28 @@ const removeFirstAndLastLines = (textSummary: string) => {
       }
     }
 
+    line = line.replace(/(\d+([\.\-]\d+)*)/g, getFormattedValue);
+
     return line;
   });
 
+  if (lines[1].startsWith("--")) {
+    lines[1] = `---|--:|---:|--:|--:|---`;
+  }
+
   return lines.join("\n");
+};
+
+export const getFormattedValue = (value: string, ...args) => {
+  if (!value) return "";
+
+  const matchedIndex = args[2];
+  const line = args[3];
+
+  const lastColumnOffset = getNthIndexOfCharacter(line, "|", 5);
+  if (lastColumnOffset < matchedIndex) {
+    return `\`${value}\``;
+  }
+
+  return `\`${Number(value).toFixed(2)}\``;
 };

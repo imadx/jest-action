@@ -50,3 +50,19 @@ export const getCoverageFileName = (shardIndex: number) => {
 export const getCoverageArtifactName = (shardIndex: number) => {
   return `coverage-shard-${shardIndex}`;
 };
+
+export const getNthIndexOfCharacter = (input: string, character: string, n: number): number => {
+  let foundIndex = 0;
+
+  for (let i = 0; i < input.length; i++) {
+    if (input.charAt(i) === character) {
+      foundIndex++;
+    }
+
+    if (foundIndex === n) {
+      return i;
+    }
+  }
+
+  return -1;
+};

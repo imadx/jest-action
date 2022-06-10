@@ -1,4 +1,12 @@
-import { getCoverageArtifactName, getCoverageFileName, getString, getSummaryTable, logException, moveFile } from ".";
+import {
+  getCoverageArtifactName,
+  getCoverageFileName,
+  getNthIndexOfCharacter,
+  getString,
+  getSummaryTable,
+  logException,
+  moveFile,
+} from ".";
 import * as mockedActionsIo from "@actions/io";
 import * as mockedActionsCore from "@actions/core";
 
@@ -73,6 +81,15 @@ describe("utils", () => {
 
       expect(spyOnError).toHaveBeenCalledWith("mocked-stdout-error");
       expect(spyOnSetError).toHaveBeenCalledWith("mocked-stdout-error");
+    });
+  });
+
+  describe("getNthIndexOfCharacter", () => {
+    it("should return valid index", () => {
+      expect(getNthIndexOfCharacter("pineapple", "p", 1)).toEqual(0);
+      expect(getNthIndexOfCharacter("pineapple", "p", 2)).toEqual(5);
+      expect(getNthIndexOfCharacter("pineapple", "p", 3)).toEqual(6);
+      expect(getNthIndexOfCharacter("pineapple", "p", 4)).toEqual(-1);
     });
   });
 });
