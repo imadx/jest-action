@@ -4,12 +4,23 @@ This action allows Jest to be run in shards and reports merged coverage to the c
 
 ## Inputs
 
+### with 'run-tests' command
+
 | Input                  | Required | Default        | Description                                                                       |
 | ---------------------- | :------: | -------------- | --------------------------------------------------------------------------------- |
 | `github-token`         |    ✓     | `GITHUB_TOKEN` | Github Token for the workflow                                                     |
 | `command`              |          | `run-tests`    | Action to run. <br /> Available commands: `run-tests`, `merge-coverage`           |
 | `coverage`             |          | `true`         | Enable Coverage for`run-tests` command                                            |
 | `shard`                |          | `1/1`          | Jest shard to be executed for`run-tests` command (eg: `1/4`)                      |
+| `skip-artifact-upload` |          | `false`        | Avoid uploading coverage results, if all the actions are running in a single step |
+
+### with 'merge-coverage' command
+
+| Input                  | Required | Default        | Description                                                                       |
+| ---------------------- | :------: | -------------- | --------------------------------------------------------------------------------- |
+| `github-token`         |    ✓     | `GITHUB_TOKEN` | Github Token for the workflow                                                     |
+| `command`              |    ✓     | `run-tests`    | Action to run. <br /> Available commands: `run-tests`, `merge-coverage`           |
+| `shard-count`          |          | `1`            | Shard count need to be defined `merge-coverage` command                           |
 | `skip-artifact-upload` |          | `false`        | Avoid uploading coverage results, if all the actions are running in a single step |
 
 ## Example with a matrix
@@ -34,7 +45,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: "16.x"
-      - uses: imadx/jest-action@v0.3
+      - uses: imadx/jest-action@v0.4
         with:
           command: "run-tests"
           shard: ${{ matrix.shard }}
@@ -47,7 +58,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: "16.x"
-      - uses: imadx/jest-action@v0.3
+      - uses: imadx/jest-action@v0.4
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
           command: "merge-coverage"
