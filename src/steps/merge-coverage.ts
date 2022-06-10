@@ -30,6 +30,9 @@ export const mergeCoverage = async ({ token, skipArtifactUpload, shardCount }: M
     info(output.toString());
 
     const summary = readFileSync("./coverage-merged/coverage-summary.json");
+    info("Coverage summary:");
+    info(JSON.stringify(summary));
+
     const result = JSON.parse(summary.toString()) as { total: SummaryTotal };
 
     if (!token.trim()) {
