@@ -1,7 +1,7 @@
 import { error, getBooleanInput, getInput, setFailed } from "@actions/core";
 import { info } from "console";
-import { mergeCoverage } from "./src/steps/merge-coverage";
-import { runTests } from "./src/steps/run-tests";
+import { mergeCoverage } from "./steps/merge-coverage";
+import { runTests } from "./steps/run-tests";
 
 async function run() {
   const command = getInput("command");

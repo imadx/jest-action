@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "esbuild index.ts --platform=node --bundle --minify --outfile=dist/index.js",
+    "build": "esbuild src/index.ts --platform=node --bundle --minify --outfile=dist/index.js",
     "test": "jest"
   },
   "simple-git-hooks": {
