@@ -17,7 +17,7 @@ async function run() {
       break;
     case "merge-coverage":
       await mergeCoverage({
-        token: getInput("github-token") || getInput("github-token"),
+        token: getInput("github-token"),
       });
       break;
     default:

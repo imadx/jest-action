@@ -6,10 +6,10 @@ This action allows Jest to be run in shards and reports merged coverage to the c
 
 | Input          | Required | Default        | Description                                                             |
 | -------------- | :------: | -------------- | ----------------------------------------------------------------------- |
-| `github-token` | `false`  | `GITHUB_TOKEN` | Github Token for the workflow                                           |
-| `command`      | `false`  | `run-tests`    | Action to run. <br /> Available commands: `run-tests`, `merge-coverage` |
-| `coverage`     | `false`  | `true`         | Enable Coverage for`run-tests` command                                  |
-| `shard`        | `false`  | `1/1`          | Jest shard to be executed for`run-tests` command (eg: `1/4`)            |
+| `github-token` |    ✓     | `GITHUB_TOKEN` | Github Token for the workflow                                           |
+| `command`      |          | `run-tests`    | Action to run. <br /> Available commands: `run-tests`, `merge-coverage` |
+| `coverage`     |          | `true`         | Enable Coverage for`run-tests` command                                  |
+| `shard`        |          | `1/1`          | Jest shard to be executed for`run-tests` command (eg: `1/4`)            |
 
 ## Example usage
 
@@ -42,8 +42,10 @@ jobs:
           node-version: "16.x"
       - uses: imadx/jest-action@v0.1
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           command: "run-tests"
           shard: ${{ matrix.shard }}
+
   merge-coverage:
     runs-on: ubuntu-latest
     steps:
@@ -53,6 +55,7 @@ jobs:
           node-version: "16.x"
       - uses: imadx/jest-action@v0.1
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           command: "merge-coverage"
 ```
 

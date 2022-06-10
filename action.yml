@@ -5,7 +5,7 @@ inputs:
   github-token:
     description: "Github Token for the workflow"
     default: "GITHUB_TOKEN"
-    required: false
+    required: true
   command:
     description: "Command to run (one of 'run-tests' | 'merge-coverage'"
     required: false
