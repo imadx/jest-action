@@ -5,35 +5,70 @@ import * as mockedOctokit from "../utils/octokit";
 import * as mockedUtils from "../utils";
 import { GitHub } from "@actions/github/lib/utils";
 import * as mockedChildProcess from "child_process";
+import * as mockedActionsGithub from "@actions/github";
 
 describe("merge-coverage", () => {
-  afterAll(() => {
-    jest.restoreAllMocks();
-  });
-
-  beforeAll(() => {
-    jest.spyOn(mockedFs, "readFileSync").mockReturnValue(Buffer.from(JSON.stringify(coverageSummary)));
+  describe("default", () => {
+    afterAll(() => {
+      jest.restoreAllMocks();
+    });
 
     const spyOnCreateIssueComment = jest.fn();
     const spyOnCreateCommitComment = jest.fn();
 
-    jest.spyOn(mockedChildProcess, "execSync").mockReturnValue(execSyncOutput);
+    beforeAll(() => {
+      jest.spyOn(mockedFs, "readFileSync").mockReturnValue(Buffer.from(JSON.stringify(coverageSummary)));
 
-    jest.spyOn(mockedUtils, "getCoverageArtifactName").mockReturnValue("artifact-1");
-    jest.spyOn(mockedUtils, "getSummaryTable").mockReturnValue("<table>");
-    jest.spyOn(mockedUtils, "logException").mockReturnValue();
+      jest.spyOn(mockedChildProcess, "execSync").mockReturnValue(execSyncOutput);
 
-    jest.spyOn(mockedOctokit, "getOctokitForToken").mockReturnValue({
-      rest: {
-        repos: { createCommitComment: spyOnCreateCommitComment } as any,
-        issues: { createComment: spyOnCreateIssueComment } as any,
-      },
-    } as InstanceType<typeof GitHub>);
+      jest.spyOn(mockedUtils, "getCoverageArtifactName").mockReturnValue("artifact-1");
+      jest.spyOn(mockedUtils, "getSummaryTable").mockReturnValue("<table>");
+      jest.spyOn(mockedUtils, "logException").mockReturnValue();
+
+      jest.spyOn(mockedOctokit, "getOctokitForToken").mockReturnValue({
+        rest: {
+          repos: { createCommitComment: spyOnCreateCommitComment } as any,
+          issues: { createComment: spyOnCreateIssueComment } as any,
+        },
+      } as InstanceType<typeof GitHub>);
+    });
+
+    it("should output merged coverage", async () => {
+      await mergeCoverage({ token: "fake-token", skipArtifactUpload: true, shardCount: 2 });
+
+      expect(spyOnCreateCommitComment).toHaveBeenCalledWith({});
+    });
   });
 
-  it("should output merged coverage", async () => {
-    await mergeCoverage({ token: "fake-token", skipArtifactUpload: true, shardCount: 2 });
+  describe("skipArtifactUpload: false", () => {
+    afterAll(() => {
+      jest.restoreAllMocks();
+    });
 
-    expect(true).toBe(true);
+    beforeAll(() => {
+      jest.spyOn(mockedFs, "readFileSync").mockReturnValue(Buffer.from(JSON.stringify(coverageSummary)));
+
+      const spyOnCreateIssueComment = jest.fn();
+      const spyOnCreateCommitComment = jest.fn();
+
+      jest.spyOn(mockedChildProcess, "execSync").mockReturnValue(execSyncOutput);
+
+      jest.spyOn(mockedUtils, "getCoverageArtifactName").mockReturnValue("artifact-1");
+      jest.spyOn(mockedUtils, "getSummaryTable").mockReturnValue("<table>");
+      jest.spyOn(mockedUtils, "logException").mockReturnValue();
+
+      jest.spyOn(mockedOctokit, "getOctokitForToken").mockReturnValue({
+        rest: {
+          repos: { createCommitComment: spyOnCreateCommitComment } as any,
+          issues: { createComment: spyOnCreateIssueComment } as any,
+        },
+      } as InstanceType<typeof GitHub>);
+    });
+
+    it("should output merged coverage", async () => {
+      await mergeCoverage({ token: "fake-token", skipArtifactUpload: false, shardCount: 2 });
+
+      expect(true).toBe(true);
+    });
   });
 });
