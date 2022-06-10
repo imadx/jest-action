@@ -7,8 +7,8 @@ export const getString = (...args: string[]): string => {
   return args.filter(Boolean).join(" ");
 };
 
-export const moveFile = (source: string, destination: string) => {
-  mv(source, destination, { force: true });
+export const moveFile = async (source: string, destination: string) => {
+  await mv(source, destination, { force: true });
 };
 
 export const logException = (exception: Error | ExecError) => {

@@ -18,7 +18,7 @@ export const runTests = async ({ coverage, shard, skipArtifactUpload }: RunTests
     info(output.toString());
 
     const coverageFileName = `coverage/coverage-shard-${shard.split("/")[0]}.json`;
-    moveFile("coverage/coverage-final.json", coverageFileName);
+    await moveFile("coverage/coverage-final.json", coverageFileName);
 
     if (!skipArtifactUpload) {
       info("Uploading artifacts...");
