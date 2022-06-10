@@ -1,4 +1,4 @@
-name: "Jest GitHub Action"
+name: "Jest GitHub Action with shard support"
 author: "Ishan Madhusanka (ahtimadhusanka@gmail.com)"
 description: "Runs Jest with shard support and merges collected coverage"
 inputs:
