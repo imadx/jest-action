@@ -14,7 +14,7 @@ export const runTests = async ({ coverage, shard, skipArtifactUpload }: RunTests
   info(getString("Running tests", coverage && "with coverage", shard && `for shard ${shard}`));
 
   try {
-    const output = execSync(getString("npm run test", coverage && "--coverage", shard && `--shard ${shard}`));
+    const output = execSync(getString("npm run test --", coverage && "--coverage", shard && `--shard ${shard}`));
 
     info(output.toString());
 
