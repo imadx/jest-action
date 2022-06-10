@@ -1,7 +1,7 @@
-import { info } from "@actions/core";
+import { info, setOutput } from "@actions/core";
 import { execSync } from "child_process";
 import { create as createClient } from "@actions/artifact";
-import { getString, logException, moveFile } from "../utils";
+import { getCoverageArtifactName, getCoverageFileName, getString, logException, moveFile } from "../utils";
 
 interface RunTests {
   coverage: boolean;
@@ -17,15 +17,18 @@ export const runTests = async ({ coverage, shard, skipArtifactUpload }: RunTests
 
     info(output.toString());
 
-    const coverageFileName = `coverage/coverage-shard-${shard.split("/")[0]}.json`;
+    const shardIndex = +shard.split("/")[0];
+
+    const coverageFileName = getCoverageFileName(shardIndex);
     await moveFile("coverage/coverage-final.json", coverageFileName);
 
     if (!skipArtifactUpload) {
       info("Uploading artifacts...");
       const artifactClient = createClient();
-      await artifactClient.uploadArtifact("coverage-shard", [coverageFileName], ".", {
+      await artifactClient.uploadArtifact(getCoverageArtifactName(shardIndex), [coverageFileName], ".", {
         retentionDays: 1,
       });
+
       info("Uploading artifacts... DONE");
     }
 

@@ -20,6 +20,7 @@ async function run() {
       await mergeCoverage({
         token: getInput("github-token"),
         skipArtifactUpload: getBooleanInput("skip-artifact-upload"),
+        shardCount: +getInput("shard-count"),
       });
       break;
     default:

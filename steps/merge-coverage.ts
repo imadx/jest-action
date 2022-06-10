@@ -4,26 +4,28 @@ import { execSync } from "child_process";
 import { info } from "console";
 import { readFileSync } from "fs";
 import { SummaryTotal } from "../types";
-import { getSummaryTable, logException } from "../utils";
+import { getCoverageArtifactName, getSummaryTable, logException } from "../utils";
 
 interface MergeCoverage {
   token: string;
   skipArtifactUpload: boolean;
+  shardCount: number;
 }
 
-export const mergeCoverage = async ({ token, skipArtifactUpload }: MergeCoverage) => {
+export const mergeCoverage = async ({ token, skipArtifactUpload, shardCount }: MergeCoverage) => {
   info(`Merging coverage...`);
 
   try {
-    // TODO: check if file exists
-    const output = execSync("npx --yes nyc report --reporter json-summary -t coverage --report-dir coverage-merged");
-
-    info(output.toString());
-
     if (!skipArtifactUpload) {
       const artifactClient = createClient();
-      await artifactClient.downloadAllArtifacts();
+      for (let i = 1; i <= shardCount; i++) {
+        await artifactClient.downloadArtifact(getCoverageArtifactName(i));
+      }
     }
+
+    // TODO: check if file exists
+    const output = execSync("npx --yes nyc report --reporter json-summary -t coverage --report-dir coverage-merged");
+    info(output.toString());
 
     const summary = readFileSync("./coverage-merged/coverage-summary.json");
     const result = JSON.parse(summary.toString()) as { total: SummaryTotal };

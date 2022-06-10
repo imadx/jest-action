@@ -42,3 +42,11 @@ export const getIndicator = (progress: number): string => {
 
   return "🔴";
 };
+
+export const getCoverageFileName = (shardIndex: number) => {
+  return `coverage/coverage-shard-${shardIndex}.json`;
+};
+
+export const getCoverageArtifactName = (shardIndex: number) => {
+  return `coverage-shard-${shardIndex}`;
+};
