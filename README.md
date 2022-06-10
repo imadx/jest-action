@@ -23,36 +23,35 @@ on:
   pull_request:
     branches:
       - master
-
 jobs:
   run-tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        shard: [1/4, 2/4, 3/4, 4/4]
+        shard: [1/2, 2/2]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: "16.x"
-      - uses: imadx/jest-action@v0.1
+      - uses: imadx/jest-action@v0.3
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           command: "run-tests"
           shard: ${{ matrix.shard }}
 
   merge-coverage:
     runs-on: ubuntu-latest
+    needs: run-tests
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: "16.x"
-      - uses: imadx/jest-action@v0.1
+      - uses: imadx/jest-action@v0.3
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
           command: "merge-coverage"
-          shard-count: "4"
+          shard-count: "2"
 ```
 
 ## Example Usage for tests in this repo
