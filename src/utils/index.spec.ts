@@ -3,6 +3,14 @@ import * as mockedActionsIo from "@actions/io";
 import * as mockedActionsCore from "@actions/core";
 
 describe("utils", () => {
+  beforeAll(() => {
+    jest.restoreAllMocks();
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+
   describe("getString", () => {
     it("should return a string joined with spaces", () => {
       expect(getString("sample", undefined, null, "", "string")).toEqual("sample string");
@@ -10,10 +18,13 @@ describe("utils", () => {
   });
 
   describe("moveFile", () => {
-    it("should call mv from @actions/io", async () => {
-      const spyOnMv = jest.spyOn(mockedActionsIo, "mv").mockResolvedValue();
+    let spyOnMv: jest.SpyInstance;
+    beforeAll(async () => {
+      spyOnMv = jest.spyOn(mockedActionsIo, "mv").mockResolvedValue();
       await moveFile("source", "destination");
+    });
 
+    it("should call mv from @actions/io", async () => {
       expect(spyOnMv).toHaveBeenCalledWith("source", "destination", { force: true });
     });
   });
@@ -37,8 +48,13 @@ describe("utils", () => {
   });
 
   describe("logException", () => {
-    const spyOnError = jest.spyOn(mockedActionsCore, "error").mockReturnValue();
-    const spyOnSetError = jest.spyOn(mockedActionsCore, "setFailed").mockReturnValue();
+    let spyOnError: jest.SpyInstance;
+    let spyOnSetError: jest.SpyInstance;
+
+    beforeAll(() => {
+      spyOnError = jest.spyOn(mockedActionsCore, "error").mockReturnValue();
+      spyOnSetError = jest.spyOn(mockedActionsCore, "setFailed").mockReturnValue();
+    });
 
     afterEach(() => {
       spyOnError.mockClear();

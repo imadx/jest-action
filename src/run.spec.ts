@@ -2,11 +2,21 @@ import * as mockedActionsCore from "@actions/core";
 import { run } from "./run";
 
 describe("run", () => {
-  it("should route commands", () => {
-    const spyOnError = jest.spyOn(mockedActionsCore, "error").mockReturnValue();
-    const spyOnGetInput = jest.spyOn(mockedActionsCore, "getInput").mockReturnValue("gibberish");
-    const spyOnSetFailed = jest.spyOn(mockedActionsCore, "setFailed").mockReturnValue();
+  let spyOnError: jest.SpyInstance;
+  let spyOnGetInput: jest.SpyInstance;
+  let spyOnSetFailed: jest.SpyInstance;
 
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+
+  beforeAll(() => {
+    spyOnError = jest.spyOn(mockedActionsCore, "error").mockReturnValue();
+    spyOnGetInput = jest.spyOn(mockedActionsCore, "getInput").mockReturnValue("gibberish");
+    spyOnSetFailed = jest.spyOn(mockedActionsCore, "setFailed").mockReturnValue();
+  });
+
+  it("should route commands", () => {
     run();
 
     expect(spyOnGetInput).toHaveBeenCalledWith("command");

@@ -6,6 +6,7 @@ import { readFileSync } from "fs";
 import { SummaryTotal } from "../types";
 import { getCoverageArtifactName, getSummaryTable, logException } from "../utils";
 import { debug } from "@actions/core";
+import { getOctokitForToken } from "../utils/octokit";
 
 interface MergeCoverage {
   token: string;
@@ -26,12 +27,16 @@ export const mergeCoverage = async ({ token, skipArtifactUpload, shardCount }: M
     }
 
     // TODO: check if file exists
-    const output = execSync("npx --yes nyc report --reporter json-summary -t coverage --report-dir coverage-merged");
-    info(output.toString());
+    const output = execSync(
+      "npx --yes nyc report --reporter=json-summary --reporter=text -t coverage --report-dir coverage-merged"
+    );
 
+    const textSummary = output.toString();
+
+    info("Text Summary:");
+    info(textSummary);
+    
     const summary = readFileSync("./coverage-merged/coverage-summary.json");
-    info("Coverage summary:");
-    info(JSON.stringify(summary.toString()));
 
     const result = JSON.parse(summary.toString()) as { total: SummaryTotal };
 
@@ -39,17 +44,19 @@ export const mergeCoverage = async ({ token, skipArtifactUpload, shardCount }: M
       throw new Error("token not found");
     }
 
+    const commentBody = getCommentBody(result.total, textSummary);
+
     if (context.payload.pull_request) {
-      getOctokit(token).rest.issues.createComment({
+      getOctokitForToken(token).rest.issues.createComment({
         ...context.repo,
         issue_number: context.payload.pull_request.number,
-        body: getCommentBody(result.total),
+        body: commentBody,
       });
     } else {
-      getOctokit(token).rest.repos.createCommitComment({
+      getOctokitForToken(token).rest.repos.createCommitComment({
         ...context.repo,
         commit_sha: context.sha,
-        body: getCommentBody(result.total),
+        body: commentBody,
       });
     }
 
@@ -59,12 +66,31 @@ export const mergeCoverage = async ({ token, skipArtifactUpload, shardCount }: M
   }
 };
 
-export const getCommentBody = (summaryTotal: SummaryTotal): string => {
+export const getCommentBody = (summaryTotal: SummaryTotal, textSummary: string): string => {
   const output = [];
 
-  output.push("### Code Coverage");
+  // Code Coverage Summary
+  output.push("### Code Coverage Summary");
   output.push("");
   output.push(getSummaryTable(summaryTotal));
 
+  // Code Coverage on All Files
+  output.push(`<details>`);
+  output.push(`  <summary>Code Coverage on All Files</summary>`);
+  output.push("");
+  output.push("### Code Coverage on All Files");
+
+  const _textSummaryBody = removeFirstAndLastLines(textSummary);
+  output.push(_textSummaryBody);
+
+  output.push(`</details>`);
+  output.push("");
+
   return output.join("\n");
+};
+
+const removeFirstAndLastLines = (textSummary: string) => {
+  const lines = textSummary.split("\n").slice(1);
+  lines.pop();
+  return lines.join("\n");
 };
