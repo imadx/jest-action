@@ -59,4 +59,4 @@ jobs:
 
 The following is how the action is being used for this repo with `pnpm`
 
-[.github/workflows/test.yml](https://github.com/imadx/jest-action/blob/b9e5e8247e4ea73ce82721705c4637de9121a7e0/.github/workflows/test.yml)
+[.github/workflows/test.yml](https://github.com/imadx/jest-action/blob/main/.github/workflows/test.yml)
