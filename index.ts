@@ -10,14 +10,16 @@ async function run() {
 
   switch (command) {
     case "run-tests":
-      const coverage = getBooleanInput("coverage");
-      const shard = getInput("shard");
-
-      await runTests({ coverage, shard });
+      await runTests({
+        coverage: getBooleanInput("coverage"),
+        shard: getInput("shard"),
+        skipArtifactUpload: getBooleanInput("skip-artifact-upload"),
+      });
       break;
     case "merge-coverage":
       await mergeCoverage({
         token: getInput("github-token"),
+        skipArtifactUpload: getBooleanInput("skip-artifact-upload"),
       });
       break;
     default:

@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@actions/artifact': ^1.1.0
   '@actions/core': ^1.8.2
   '@actions/github': ^5.0.3
   '@actions/io': ^1.1.2
@@ -14,6 +15,7 @@ specifiers:
   typescript: ^4.7.3
 
 dependencies:
+  '@actions/artifact': 1.1.0
   '@actions/core': 1.8.2
   '@actions/github': 5.0.3
   '@actions/io': 1.1.2
@@ -29,6 +31,15 @@ devDependencies:
   typescript: 4.7.3
 
 packages:
+
+  /@actions/artifact/1.1.0:
+    resolution: {integrity: sha512-shO+w/BAnzRnFhfsgUao8sxjByAMqDdfvek2LLKeCueBKXoTrAcp7U/hs9Fdx+z9g7Q0mbIrmHAzAAww4HK1bQ==}
+    dependencies:
+      '@actions/core': 1.8.2
+      '@actions/http-client': 2.0.1
+      tmp: 0.2.1
+      tmp-promise: 3.0.3
+    dev: false
 
   /@actions/core/1.8.2:
     resolution: {integrity: sha512-FXcBL7nyik8K5ODeCKlxi+vts7torOkoDAKfeh61EAkAy1HAvwn9uVzZBY0f15YcQTcZZ2/iSGBFHEuioZWfDA==}
@@ -2277,6 +2288,19 @@ packages:
 
   /throat/6.0.1:
     resolution: {integrity: sha512-8hmiGIJMDlwjg7dlJ4yKGLK8EsYqKgPWbG3b4wjJddKNwc7N7Dpn08Df4szr/sZdMVeOstrdYSsqzX6BYbcB+w==}
+
+  /tmp-promise/3.0.3:
+    resolution: {integrity: sha512-RwM7MoPojPxsOBYnyd2hy0bxtIlVrihNs9pj5SUvY8Zz1sQcQG2tG1hSr8PDxfgEB8RNKDhqbIlroIarSNDNsQ==}
+    dependencies:
+      tmp: 0.2.1
+    dev: false
+
+  /tmp/0.2.1:
+    resolution: {integrity: sha512-76SUhtfqR2Ijn+xllcI5P1oyannHNHByD80W1q447gU3mp9G9PSpGdWmjUOHRDPiHYacIk66W7ubDTuPF3BEtQ==}
+    engines: {node: '>=8.17.0'}
+    dependencies:
+      rimraf: 3.0.2
+    dev: false
 
   /tmpl/1.0.5:
     resolution: {integrity: sha512-3f0uOEAQwIqGuWW2MVzYg8fV/QNnc/IpuJNG837rLuczAaLVHslWHZQj4IGiEl5Hs3kkbhwL9Ab7Hrsmuj+Smw==}

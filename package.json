@@ -11,6 +11,7 @@
     "pre-commit": "pnpm run build && git add -A ."
   },
   "dependencies": {
+    "@actions/artifact": "^1.1.0",
     "@actions/core": "^1.8.2",
     "@actions/github": "^5.0.3",
     "@actions/io": "^1.1.2",

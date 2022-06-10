@@ -18,6 +18,10 @@ inputs:
     description: "Jest shard to be executed for`run-tests` command (eg: `1/4`) "
     required: false
     default: "1/1"
+  skip-artifact-upload:
+    description: "Avoid uploading coverage results, if all the actions are running in a single step"
+    required: false
+    default: "false"
 runs:
   using: "node16"
   main: "dist/index.js"

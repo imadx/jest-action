@@ -4,12 +4,13 @@ This action allows Jest to be run in shards and reports merged coverage to the c
 
 ## Inputs
 
-| Input          | Required | Default        | Description                                                             |
-| -------------- | :------: | -------------- | ----------------------------------------------------------------------- |
-| `github-token` |    ✓     | `GITHUB_TOKEN` | Github Token for the workflow                                           |
-| `command`      |          | `run-tests`    | Action to run. <br /> Available commands: `run-tests`, `merge-coverage` |
-| `coverage`     |          | `true`         | Enable Coverage for`run-tests` command                                  |
-| `shard`        |          | `1/1`          | Jest shard to be executed for`run-tests` command (eg: `1/4`)            |
+| Input                  | Required | Default        | Description                                                                       |
+| ---------------------- | :------: | -------------- | --------------------------------------------------------------------------------- |
+| `github-token`         |    ✓     | `GITHUB_TOKEN` | Github Token for the workflow                                                     |
+| `command`              |          | `run-tests`    | Action to run. <br /> Available commands: `run-tests`, `merge-coverage`           |
+| `coverage`             |          | `true`         | Enable Coverage for`run-tests` command                                            |
+| `shard`                |          | `1/1`          | Jest shard to be executed for`run-tests` command (eg: `1/4`)                      |
+| `skip-artifact-upload` |          | `false`        | Avoid uploading coverage results, if all the actions are running in a single step |
 
 ## Example usage
 
