@@ -22,6 +22,10 @@ inputs:
     description: "Avoid uploading coverage results, if all the actions are running in a single step"
     required: false
     default: "false"
+  show-all-files-in-summary:
+    description: "Shows coverage information of all files, along with the summary"
+    required: false
+    default: "false"
   shard-count:
     description: "Shard count need to be defined `merge-coverage` command"
     required: false

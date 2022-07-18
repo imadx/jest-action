@@ -80,17 +80,19 @@ export const getCommentBody = (
   output.push("");
   output.push(getSummaryTable(coverageSummary.total));
 
-  // Code Coverage on All Files
-  output.push(`<details>`);
-  output.push(`  <summary>Code Coverage on All Files</summary>`);
-  output.push("");
-  output.push("### Code Coverage on All Files");
+  if (showAllFilesInSummary) {
+    // Code Coverage on All Files
+    output.push(`<details>`);
+    output.push(`  <summary>Code Coverage on All Files</summary>`);
+    output.push("");
+    output.push("### Code Coverage on All Files");
 
-  const _textSummaryBody = getCoverageDetailsTable(textSummary, showAllFilesInSummary);
-  output.push(_textSummaryBody);
+    const _textSummaryBody = getCoverageDetailsTable(textSummary, showAllFilesInSummary);
+    output.push(_textSummaryBody);
 
-  output.push(`</details>`);
-  output.push("");
+    output.push(`</details>`);
+    output.push("");
+  }
 
   return output.join("\n");
 };

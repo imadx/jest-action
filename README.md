@@ -19,12 +19,13 @@ The action consumes the default `npm run test` command. Therefore, additional `j
 
 ### with 'merge-coverage' command
 
-| Input                  | Default        | Description                                                                                |
-| ---------------------- | -------------- | ------------------------------------------------------------------------------------------ |
-| `github-token` \*      | `GITHUB_TOKEN` | Github Token for the workflow                                                              |
-| `command` \*           | `run-tests`    | **Should set to `merge-coverage`**                                                         |
-| `shard-count`          | `1`            | **Shard count need to be defined `merge-coverage` command<br/> if different from default** |
-| `skip-artifact-upload` | `false`        | Avoid uploading coverage results, if all the actions are running in a single step          |
+| Input                       | Default        | Description                                                                                |
+| --------------------------- | -------------- | ------------------------------------------------------------------------------------------ |
+| `github-token` \*           | `GITHUB_TOKEN` | Github Token for the workflow                                                              |
+| `command` \*                | `run-tests`    | **Should set to `merge-coverage`**                                                         |
+| `shard-count`               | `1`            | **Shard count need to be defined `merge-coverage` command<br/> if different from default** |
+| `skip-artifact-upload`      | `false`        | Avoid uploading coverage results, if all the actions are running in a single step          |
+| `show-all-files-in-summary` | `false`        | Shows coverage information of all files, along with the summary                            |
 
 ## Example with a matrix
 
@@ -48,7 +49,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: "16.x"
-      - uses: imadx/jest-action@v0.7
+      - uses: imadx/jest-action@v0.8
         with:
           command: "run-tests"
           shard: ${{ matrix.shard }}
@@ -61,8 +62,9 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: "16.x"
-      - uses: imadx/jest-action@v0.7
+      - uses: imadx/jest-action@v0.8
         with:
+          show-all-files-in-summary: true
           github-token: "${{ secrets.GITHUB_TOKEN }}"
           command: "merge-coverage"
           shard-count: "2"

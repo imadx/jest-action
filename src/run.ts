@@ -21,6 +21,7 @@ export const run = async () => {
         token: getInput("github-token"),
         skipArtifactUpload: getBooleanInput("skip-artifact-upload"),
         shardCount: +getInput("shard-count"),
+        showAllFilesInSummary: getBooleanInput("show-all-files-in-summary"),
       });
       break;
     default: {

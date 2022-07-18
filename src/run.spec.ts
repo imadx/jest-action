@@ -57,7 +57,10 @@ describe("run", () => {
         .mockReturnValueOnce("fake-token")
         .mockReturnValueOnce("3");
 
-      spyOnGetBooleanInput = jest.spyOn(mockedActionsCore, "getBooleanInput").mockReturnValueOnce(true);
+      spyOnGetBooleanInput = jest
+        .spyOn(mockedActionsCore, "getBooleanInput")
+        .mockReturnValueOnce(true)
+        .mockReturnValueOnce(true);
       spyOnMergeCoverage = jest.spyOn(mockedStepsMergeCoverage, "mergeCoverage").mockImplementation(jest.fn());
     });
 
@@ -69,10 +72,12 @@ describe("run", () => {
       expect(spyOnGetInput).toHaveBeenNthCalledWith(3, "shard-count");
 
       expect(spyOnGetBooleanInput).toHaveBeenNthCalledWith(1, "skip-artifact-upload");
+      expect(spyOnGetBooleanInput).toHaveBeenNthCalledWith(2, "show-all-files-in-summary");
 
       expect(spyOnMergeCoverage).toHaveBeenCalledWith({
         shardCount: 3,
         skipArtifactUpload: true,
+        showAllFilesInSummary: true,
         token: "fake-token",
       });
     });
