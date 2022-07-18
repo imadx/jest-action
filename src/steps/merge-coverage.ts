@@ -12,9 +12,15 @@ interface MergeCoverage {
   token: string;
   skipArtifactUpload: boolean;
   shardCount: number;
+  showAllFilesInSummary: boolean;
 }
 
-export const mergeCoverage = async ({ token, skipArtifactUpload, shardCount }: MergeCoverage) => {
+export const mergeCoverage = async ({
+  token,
+  skipArtifactUpload,
+  shardCount,
+  showAllFilesInSummary,
+}: MergeCoverage) => {
   info(`Merging coverage...`);
 
   try {
@@ -40,7 +46,7 @@ export const mergeCoverage = async ({ token, skipArtifactUpload, shardCount }: M
 
     const result = JSON.parse(summary.toString()) as CoverageSummary;
 
-    const commentBody = getCommentBody(result, textSummary);
+    const commentBody = getCommentBody(result, textSummary, showAllFilesInSummary);
 
     if (context.payload.pull_request) {
       await getOctokitForToken(token).rest.issues.createComment({
@@ -62,8 +68,12 @@ export const mergeCoverage = async ({ token, skipArtifactUpload, shardCount }: M
   }
 };
 
-export const getCommentBody = (coverageSummary: CoverageSummary, textSummary: string): string => {
-  const output = [];
+export const getCommentBody = (
+  coverageSummary: CoverageSummary,
+  textSummary: string,
+  showAllFilesInSummary: boolean
+): string => {
+  const output: string[] = [];
 
   // Code Coverage Summary
   output.push("### Code Coverage Summary");
@@ -76,7 +86,7 @@ export const getCommentBody = (coverageSummary: CoverageSummary, textSummary: st
   output.push("");
   output.push("### Code Coverage on All Files");
 
-  const _textSummaryBody = removeFirstAndLastLines(textSummary);
+  const _textSummaryBody = getCoverageDetailsTable(textSummary, showAllFilesInSummary);
   output.push(_textSummaryBody);
 
   output.push(`</details>`);
@@ -85,21 +95,23 @@ export const getCommentBody = (coverageSummary: CoverageSummary, textSummary: st
   return output.join("\n");
 };
 
-const removeFirstAndLastLines = (textSummary: string) => {
+const getCoverageDetailsTable = (textSummary: string, showAllFilesInSummary: boolean) => {
   let lines = textSummary.split("\n").slice(1).filter(Boolean);
   lines.pop();
-  lines = lines.map((line) => {
-    if (line.startsWith(" ")) {
-      const match = line.match(/^\s+/);
-      if (match) {
-        line = line.replace(/^\s+/, "".padStart(match[0].length * 2, "─") + " ");
+  lines = lines
+    .map((line) => {
+      if (line.startsWith(" ")) {
+        const match = line.match(/^\s+/);
+        if (match) {
+          line = line.replace(/^\s+/, "".padStart(match[0].length * 2, "─") + " ");
+        }
       }
-    }
 
-    line = line.replace(/(\d+([\.\-]\d+)*)/g, getFormattedValue);
+      line = line.replace(/(\d+([\.\-]\d+)*)/g, getFormattedValue);
 
-    return line;
-  });
+      return line;
+    })
+    .filter(Boolean);
 
   if (lines[1].startsWith("--")) {
     lines[1] = `---|--:|---:|--:|--:|---`;

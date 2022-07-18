@@ -34,11 +34,16 @@ describe("merge-coverage", () => {
     });
 
     it("should output merged coverage", async () => {
-      await mergeCoverage({ token: "fake-token", skipArtifactUpload: true, shardCount: 2 });
+      await mergeCoverage({
+        token: "fake-token",
+        skipArtifactUpload: true,
+        shardCount: 2,
+        showAllFilesInSummary: false,
+      });
     });
   });
 
-  describe("skipArtifactUpload: false", () => {
+  describe("skipArtifactUpload: false, showAllFilesInSummary: true", () => {
     afterAll(() => {
       jest.restoreAllMocks();
     });
@@ -64,7 +69,12 @@ describe("merge-coverage", () => {
     });
 
     it("should output merged coverage", async () => {
-      await mergeCoverage({ token: "fake-token", skipArtifactUpload: false, shardCount: 2 });
+      await mergeCoverage({
+        token: "fake-token",
+        skipArtifactUpload: false,
+        shardCount: 2,
+        showAllFilesInSummary: true,
+      });
 
       expect(true).toBe(true);
     });
