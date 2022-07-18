@@ -1,5 +1,5 @@
 import * as mockedFs from "fs";
-import { mergeCoverage } from "./merge-coverage";
+import { getCoverageDetailsTable, mergeCoverage } from "./merge-coverage";
 import { coverageSummary, execSyncOutput } from "./__sample__";
 import * as mockedOctokit from "../utils/octokit";
 import * as mockedUtils from "../utils";
@@ -78,5 +78,14 @@ describe("merge-coverage", () => {
 
       expect(true).toBe(true);
     });
+  });
+});
+
+describe("getCoverageDetailsTable", () => {
+  it("should return formatted table", () => {
+    const coverageSummary = execSyncOutput;
+    const table = getCoverageDetailsTable(coverageSummary);
+
+    expect(table).toMatchSnapshot();
   });
 });

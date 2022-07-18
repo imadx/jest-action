@@ -87,7 +87,7 @@ export const getCommentBody = (
     output.push("");
     output.push("### Code Coverage on All Files");
 
-    const _textSummaryBody = getCoverageDetailsTable(textSummary, showAllFilesInSummary);
+    const _textSummaryBody = getCoverageDetailsTable(textSummary);
     output.push(_textSummaryBody);
 
     output.push(`</details>`);
@@ -97,7 +97,7 @@ export const getCommentBody = (
   return output.join("\n");
 };
 
-const getCoverageDetailsTable = (textSummary: string, showAllFilesInSummary: boolean) => {
+export const getCoverageDetailsTable = (textSummary: string) => {
   let lines = textSummary.split("\n").slice(1).filter(Boolean);
   lines.pop();
   lines = lines
@@ -122,15 +122,22 @@ const getCoverageDetailsTable = (textSummary: string, showAllFilesInSummary: boo
   return lines.join("\n");
 };
 
-export const getFormattedValue = (value: string, ...args) => {
+export const getFormattedValue = (
+  value: string,
+  match: string,
+  _nestedMatch: string,
+  matchedIndex: number,
+  line: string
+) => {
   if (!value) return "";
-
-  const matchedIndex = args[2];
-  const line = args[3];
 
   const lastColumnOffset = getNthIndexOfCharacter(line, "|", 5);
   if (lastColumnOffset < matchedIndex) {
     return `\`${value}\``;
+  }
+
+  if (line.charAt(matchedIndex - 1).match("[A-z]")) {
+    return value;
   }
 
   return `\`${Number(value).toFixed(2)}\``;

@@ -169,7 +169,7 @@ File                | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
 All files           |   25.51 |    18.51 |   16.66 |   21.25 |                        
  src                |       0 |        0 |       0 |       0 |                        
   index.ts          |       0 |        0 |       0 |       0 | 1-34                   
-  run.ts            |       0 |        0 |       0 |       0 | 1-33                   
+  run3.ts           |       0 |        0 |       0 |       0 | 1-33                   
  src/steps          |   23.94 |        0 |      40 |   21.53 |                        
   merge-coverage.ts |   36.95 |        0 |   66.66 |   33.33 | 21-24,33-60,67-85      
   run-tests.ts      |       0 |        0 |       0 |       0 | 1-42                   

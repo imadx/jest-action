@@ -93,3 +93,4 @@ jobs:
           github-token: "${{ secrets.PERSONAL_ACCESS_TOKEN }}"
           command: "merge-coverage"
           shard-count: "2"
+          show-all-files-in-summary: true
